@@ -1,33 +1,120 @@
-import React from 'react'
-import { FaRupeeSign } from "react-icons/fa";
-export default function FoodItem() {
+import React, { useEffect, useState } from 'react';
+import { useAlert } from 'react-alert';
+import { LiaRupeeSignSolid } from "react-icons/lia";
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { addItemToCart, removeItemFromCart, updateCartQuantity } from '../../actions/cartAction';
+
+export default function FoodItem({ fooditem, restaurant }) {
+  const [quantity, setQuantity] = useState(1);
+  const [showButtons, setShowButtons] = useState(false);
+
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const alert = useAlert();
+
+  const cartItems = useSelector((state) => state.cart.cartItems);
+
+  useEffect(() => {
+    const cartItem = cartItems.find((item) => item.foodItem._id === fooditem._id);
+    if (cartItem) {
+      setQuantity(cartItem.quantity);
+      setShowButtons(true);
+    } else {
+      setQuantity(1);
+      setShowButtons(false);
+    }
+  }, [cartItems, fooditem]);
+
+  const increaseQty = () => {
+    if (quantity < fooditem.stock) {
+      const newQuantity = quantity + 1;
+      setQuantity(newQuantity);
+      dispatch(updateCartQuantity(fooditem._id, newQuantity, alert));
+    } else {
+      alert.error("Exceed stock Quantity");
+    }
+  };
+
+  const decreaseQty = () => {
+    if (quantity > 1) {
+      const newQuantity = quantity - 1;
+      setQuantity(newQuantity);
+      dispatch(updateCartQuantity(fooditem._id, newQuantity, alert));
+    } else {
+      setQuantity(0);
+      setShowButtons(false);
+      dispatch(removeItemFromCart(fooditem._id, alert));
+    }
+  };
+
+  const addToCartHandler = () => {
+    if (!isAuthenticated && !user) {
+      return navigate("/users/login");
+    }
+    if (fooditem && fooditem._id) {
+      dispatch(addItemToCart(fooditem._id, restaurant, quantity, alert));
+      setShowButtons(true);
+    } else {
+      console.error("food item id is not defined");
+    }
+  };
+
   return (
     <div className="col-sm-12 col-md-6 col-lg-3 my-3">
-        <div className="card p-3 rounded">
-            <img src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_300,h_300,c_fit/FOOD_CATALOG/IMAGES/CMS/2024/7/4/4e30b1ff-dbe8-41d3-b083-d46b9d742ffc_636d161e-7f34-4371-b63c-bf9e3d091a0f.jpg"
-             alt="" className="card-img-top mx-auto" />
-        
-        <div className="caard-body d-flex flex-column">
-            <h5 className="card-title">
-                Veg Loaded Pizza
-            </h5>
-            <p className="fooditem_desc">
-            Centre loaded with Molten Cheese & topped with Onion, Capsicum, Tomato & Grilled Mushroom *Contains non-edible container under the Pizza
-            </p>
-            <p className="card-text">
-            <FaRupeeSign />100
+      <div className="card p-3 rounded">
+        <img src={fooditem.images[0].url} alt="Pizza" className="card-img-top mx-auto" />
+        {/* heading and descriptions  */}
+        <div className="card-body d-flex flex-column">
+          <h5 className="card-title">{fooditem.name}</h5>
+          <p className="fooditem_des">
+            {fooditem.description}
+          </p>
+          <p className="card-text">
+            <LiaRupeeSignSolid /> {fooditem.price}
             <br />
-            </p>
-            <button type="button" id="cart_btn" className="btn btn-primary d-inline ml-4">Add to Cart</button>
-            <br />
-            <p>Status:
-                <span id="stock_status"
-                className={10>5? "greenColor" : "redColor"}>
-                    {10>5 ? " In Stock ": " Out of Stock "}
-                </span>
-            </p>
+          </p>
+
+          {!showButtons ? (
+            <button
+              type='button'
+              id="cart_btn"
+              className='btn btn-primary d-inline ml-4'
+              disabled={fooditem.stock === 0}
+              onClick={addToCartHandler}
+            >
+              Add To Cart
+            </button>
+          ) : (
+            <div className="stockCounter d-inline">
+              <span className="btn btn-danger minus" onClick={decreaseQty}>
+                -
+              </span>
+
+              <input
+                type="number"
+                className='form-control count d-inline'
+                value={quantity}
+                readOnly
+              />
+
+              <span className="btn btn-primary plus" onClick={increaseQty}>
+                +
+              </span>
+            </div>
+          )}
+
+          <br />
+          <p>
+            Status: <span id="stock_status"
+              className={fooditem.stock ? "greenColor" : "redColor"}>
+              {fooditem.stock ? "In Stock" : "Out of Stock"}
+            </span>
+          </p>
         </div>
-        </div>
+      </div>
     </div>
-  )
+  );
 }

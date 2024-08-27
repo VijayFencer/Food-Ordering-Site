@@ -930,3 +930,7 @@ ul.CTAs a {
   border: none;
   outline: none;
 }
+.correction{
+  display: flex;
+  direction: column;
+}
