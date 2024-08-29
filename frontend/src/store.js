@@ -10,7 +10,7 @@ import {legacy_createStore as createStore,
 import { restaurantReducers } from "./reducer/restaurantReducer";
 // this will help us to run data fetch . it is a standard approch for adding async methodology in the redux 
 import thunk from "redux-thunk";
-import { menuReducer } from "./reducer/memuReducer";
+import { menuReducer } from "./reducer/menuReducer";
 import { authReducer, forgotPasswordReducer, userReducer } from "./reducer/userReducer";
 import { cartReducer } from "./reducer/cartReducer";
 import { myOrderReducer, newOrderReducer, orderDetailsReducer } from "./reducer/orderReducer";

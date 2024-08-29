@@ -1,43 +1,39 @@
 import React, { useEffect, useState } from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
+import { useDispatch ,useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
-import {clearErrors, resetPassword} from "../../actions/userAction";
+import { clearErrors, resetPassword } from "../../actions/userAction";
 
 const NewPassword = () => {
-  
-  const [password,setPassword]=useState("");
-  const [passwordConfirm,setPasswordConfirm]=useState("");
-  
-  const alert= useAlert();
-  const dispatch =useDispatch();
-  const navigate= useNavigate();
-  
-  const {error, success} = useSelector((state)=>state.forgotPassword);
-  const {token}= useParams();
-  
-  useEffect(()=>{
-    if(error){
-      alert.error(error);
-      dispatch(clearErrors());
-    }
-    if(success){
-      alert.success("Password updated successfully");
-      navigate("/users/login");
-    }
-  },[dispatch,alert,error,success,navigate]);
+const [password,setPassword]=useState("");
+const [passwordConfirm,setPasswordConfirm]=useState("");
 
-  const submitHandler = (e) =>{
-    e.preventDefault();
-    const formData= new FormData();
-    formData.set("password",password);
-    formData.set("passwordConfirm",passwordConfirm);
+const alert=useAlert();
+const dispatch=useDispatch();
 
-    dispatch(resetPassword(token,formData));
+const {error,success}=useSelector((state)=>state.forgotPassword);
+const {token}=useParams();
+const navigate=useNavigate();
 
-  };
-  
-  
+
+useEffect(()=>{
+  if(error){
+    alert.error(error);
+    dispatch(clearErrors());
+  }
+  if(success){
+    alert.success("Password updated successfully");
+    navigate("/users/login");
+  }
+},[dispatch,alert,error,success,navigate]);
+const submitHandler=(e)=>{
+  e.preventDefault();
+  const formData=new FormData();
+  formData.set("password",password);
+  formData.set("passwordConfirm",passwordConfirm);
+
+  dispatch(resetPassword(token,formData));
+}
   return (
     <>
       <div className="row wrapper">

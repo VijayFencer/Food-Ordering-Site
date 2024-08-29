@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
-  const {user,loading} = useSelector((state)=>state.auth);
-  // console.log(user);
+
+  const {user,loading}=useSelector((state)=>state.auth);
   return (
     <>
-      {5 > 10 ? (
+      {loading ? (
         <Loader />
       ) : (
         <>
@@ -22,10 +22,12 @@ const Profile = () => {
                     alt={user?.name}
                   />
                 </figure>
-                <span>Welcome {user?.name}!</span>
+                <span>Welcome<br></br> {user?.name}!</span>
               </div>
-              <Link to="/users/me/update" id="edit_profile" className="btn btn-primary btn-block my-5">
-                Edit Profile
+              <Link 
+              to="/users/me/update"
+              id="edit_profile" className="btn btn-primary btn-block my-5">
+              Edit Profile
               </Link>
               <h4>Full Name:</h4>
               <p>{user?.name}</p>

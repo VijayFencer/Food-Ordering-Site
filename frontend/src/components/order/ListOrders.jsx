@@ -94,7 +94,9 @@ const ListOrders = () => {
         orderItems:orderItemNames,
         orderDate: new Date(order.createdAt).toLocaleDateString(),
         actions:(
-          <Link to={`/eats/orders/${order._id}`}><FaRegEye /></Link>
+          <Link to={`/eats/orders/${order._id}`}>
+              <FaRegEye />
+            </Link>
         ),
 
       });

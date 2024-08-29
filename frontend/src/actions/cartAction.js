@@ -78,7 +78,7 @@ export const removeItemFromCart = (foodItemId,alert) =>async(dispatch,getState)=
             foodItemId = foodItemId._id;
         }
         
-        const response =await axios.delete("/api/v1/eats/cart/delete-cart-item/",{
+        const response =await axios.delete("/api/v1/eats/cart/delete-cart-item",{
             data:{
                 userId:user._id,
                 foodItemId

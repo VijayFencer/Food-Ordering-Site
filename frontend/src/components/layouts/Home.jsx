@@ -5,7 +5,6 @@ import { getRestaurants, sortByRatings, sortByReviews, toggleVegOnly } from '../
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from "./Loader"
 import Message from './Message'
-import Menu from './Menu'
 
 
 export default function Home() {
@@ -48,9 +47,8 @@ const handleToggleVegOnly=()=>{
                 ) : null
               )
               ) : (
-              <Message variant="info">No Restaurant ound</Message>)}
+              <Message variant="info">No Restaurant found</Message>)}
             </div>
-            <Menu/>
         </section>
           </>
         )}

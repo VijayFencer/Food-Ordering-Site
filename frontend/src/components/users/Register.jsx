@@ -2,86 +2,80 @@ import React, { useEffect, useState } from "react";
 import {useAlert} from "react-alert";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {clearErrors, register} from "../../actions/userAction";
+import {clearErrors, register} from "../../actions/userAction"
 
 const Register = () => {
-  const alert = useAlert();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const alert=useAlert();
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
 
-  const [user,setUser] = useState({
-    name:"",
-    email : "",
-    password : "",
-    passwordConfirm : "",
-    phoneNumber : "",
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    phoneNumber: "",
   });
 
-  const {name, email, password, passwordConfirm, phoneNumber} = user;
+  const {name,email,password,passwordConfirm,phoneNumber}=user;
 
-  const [avatar,setAvatar] = useState("");
-  const [avatarPreview, setAvatarPreview] = useState("/images/images.png");
+  const [avatar,setAvatar]=useState("");
+  const [avatarPreview,setAvatarPreview]=useState("/images/images.png");
 
-
-  const {isAuthenticated, error, loading} = useSelector((state)=>state.auth);
-
-  //handler redirection with useEffect
+  const {isAuthenticated,error,loading}=useSelector(
+    (state)=>state.auth
+  );
+  //handle redirection with useEffect
   useEffect(()=>{
     if(isAuthenticated){
-      navigate("/")
+      navigate("/");
     }
     if(error){
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch,alert,isAuthenticated,error,navigate]);
+  },[dispatch,alert,isAuthenticated,error,navigate]);
 
-  const submitHandler = (e) =>{
+  //submit handler
+  const submitHandler=(e)=>{
     e.preventDefault();
 
-    if (password != passwordConfirm){
-      alert.error("Password don't matched");
+    if(password !== passwordConfirm){
+      alert.error("Password dont matched");
       return;
     }
-    const formData = new FormData();
-    formData.set("name", name); //name :Rohit
-    formData.set("email",email); //name :Rohit
-    formData.set("password",password); //name :Rohit
-    formData.set("passwordConfirm",passwordConfirm); //name :Rohit
-    formData.set("phoneNumber", phoneNumber); //name :Rohit
-    if (avatar === ""){
-      formData.set("avatar","../../../public/images/images.png")
+
+    const formData=new FormData(); 
+    formData.set("name",name);
+    formData.set("email",email);
+    formData.set("password",password);
+    formData.set("passwordConfirm",passwordConfirm);
+    formData.set("phoneNumber",phoneNumber);
+
+    if(avatar===""){
+      formData.set("avatar","/images/images.png");
     }else{
-      formData.set("avatar",avatar)
+      formData.set("avatar",avatar);
     }
 
+    dispatch(register(formData));
+  };
 
-  dispatch(register(formData));  
-};
-
- const onChange= (e) =>{
-  if (e.target.name === 'a'){
-    const reader = new FileReader();
-    reader.onload = () =>{
-      if (reader.readyState === 2) { // this will indicate reading is done 
-        setAvatarPreview(reader.result);
-        setAvatar(reader.result);
-      }
-    };
+  //onchange
+  const onChange=(e)=>{
+    if(e.target.name === "avatar"){
+      const reader=new FileReader();
+      reader.onload=()=>{
+        if(reader.readyState===2){
+          setAvatarPreview(reader.result);
+          setAvatar(reader.result);
+        }
+      };
       reader.readAsDataURL(e.target.files[0]);
     }else{
       setUser({...user,[e.target.name]:e.target.value});
     }
- }
-
-
-
-
-
-
-
-
-
+  };
 
   return (
     <>
@@ -90,7 +84,7 @@ const Register = () => {
           <form className="shadow-lg" encType="multipart/form-data" onSubmit={submitHandler}>
             <h1 className="mb-3">Register</h1>
             <div className="form-group">
-              <label htmlFor="name_field">Name</label>
+              <label htmlFor="name_field" >Name</label>
               <input
                 type="text"
                 id="name_field"

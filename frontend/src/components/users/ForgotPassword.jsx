@@ -1,32 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useAlert } from "react-alert";
-import { useDispatch ,useSelector} from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, forgotPassword } from "../../actions/userAction";
+
 const ForgotPassword = () => {
-   
-  const [email, setEmail]= useState("");
+
+  const[email, setEmail] = useState("");
   const alert = useAlert();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {error, loading, message} = useSelector((state)=>state.forgotPassword)
+  const {error, loading, message} = useSelector(
+    (state) => state.forgotPassword
+  );
 
-  useEffect(()=>{
-    if (error){
+  useEffect(() => {
+    if(error){
       alert.error(error);
       dispatch(clearErrors());
     }
-    if (message){
+    if(message){
       alert.success(message);
     }
-  },[dispatch,error,alert,message]);
+  }, [dispatch, alert, error, message]);
 
-  const submitHandler= (e)=>{
+  const submitHandler = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.set("email",email);
-
+    formData.set("email", email);
     dispatch(forgotPassword(formData));
   };
 
@@ -43,14 +43,14 @@ const ForgotPassword = () => {
                 id="email_field"
                 className="form-control"
                 value={email}
-                onChange={(e)=>setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <button
               id="forgot_password_button"
               type="submit"
               className="btn btn-block py-3"
-              disabled={loading? true : false}
+              disabled={loading ? true : false}
             >
               Send Email
             </button>
