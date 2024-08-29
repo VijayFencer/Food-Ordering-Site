@@ -5,7 +5,7 @@ export const cartReducer = (state={cartItems:[],restaurant: {}},action)=>{
         case ADD_TO_CART:
             return {
                 ...state,
-                restaurant :action.payload.restaurant,
+                restaurant: action.payload.restaurant,
                 cartItems: action.payload.items,
             };
         case UPDATE_CART_ITEM:

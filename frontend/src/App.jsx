@@ -17,8 +17,8 @@ import ForgotPassword from "./components/users/ForgotPassword";
 import NewPassword from "./components/users/NewPassword";
 import store from "./store";
 import { loadUser } from "./actions/userAction";
-// import { useDispatch, useSelector } from "react-redux";
-// import { fetchCartItems } from "./actions/cartAction";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCartItems } from "./actions/cartAction";
 
 export default function App() {
   //dispatch exactly once when the component is first rendered, and check if user is authenticated or not 
@@ -27,12 +27,12 @@ export default function App() {
     store.dispatch(loadUser());
   },[])
 
-  // const dispatch = useDispatch(); 
+  const dispatch = useDispatch(); 
 
-  // const {user} = useSelector((state)=>state.auth);
-  // if (user){
-  //   dispatch(fetchCartItems());
-  // }
+  const {user} = useSelector((state)=>state.auth);
+  if (user){
+    dispatch(fetchCartItems());
+  }
 
   return (
   <BrowserRouter>

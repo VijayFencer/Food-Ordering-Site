@@ -24,7 +24,7 @@ export default function Menu() {
         <Message variant="danger">{error}</Message>
       ) : menus && menus.length > 0 ? (
         menus.map((menu) => (
-          <div key={menus._id}>
+          <div key={menu._id}>
             <h2>{menu.category}</h2>
             <hr />
             {menu.items && menu.items.length > 0 ? (

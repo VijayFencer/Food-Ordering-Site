@@ -76,6 +76,7 @@ export default function FoodItem({ fooditem, restaurant }) {
             <LiaRupeeSignSolid /> {fooditem.price}
             <br />
           </p>
+          
 
           {!showButtons ? (
             <button
