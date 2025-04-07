@@ -1,2 +1,2 @@
-# Food-Ordering-Site
+# OrderIt
  Online Food Ordering Application with MERN Stack
